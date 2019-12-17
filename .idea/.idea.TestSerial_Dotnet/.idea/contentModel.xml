@@ -5,6 +5,7 @@
     <e p="$USER_HOME$/Library/Caches/Rider2019.2/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_TestSerial_Dotnet.-113072772.00" t="ExcludeRecursive" />
     <e p="$USER_HOME$/Library/Caches/Rider2019.2/rust_expanded_macros/VZGqhEuW/expansions" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p=".git/info/exclude" t="IncludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
       <e p="TestSerial_Dotnet" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />

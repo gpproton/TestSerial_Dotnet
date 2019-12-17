@@ -1,0 +1,23 @@
+﻿<Properties StartupConfiguration="{A7B3668D-15D9-4A2D-A716-86F8ECA4463E}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestSerial_Dotnet/Program.cs">
+    <Files>
+      <File FileName="TestSerial_Dotnet/Program.cs" Line="14" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="TestSerial_Dotnet" expanded="True">
+            <Node name="TestSerial_Dotnet" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.TestSerial__Dotnet PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
