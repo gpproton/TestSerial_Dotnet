@@ -1,13 +1,23 @@
 ﻿<Properties StartupConfiguration="{A7B3668D-15D9-4A2D-A716-86F8ECA4463E}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="TestSerial_Dotnet/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TestSerial_Dotnet/model/AppContext.cs">
     <Files>
-      <File FileName="TestSerial_Dotnet/Program.cs" Line="14" Column="1" />
+      <File FileName="TestSerial_Dotnet/Program.cs" Line="28" Column="39" />
+      <File FileName="TestSerial_Dotnet/helper/BaseHelper.cs" />
+      <File FileName="TestSerial_Dotnet/app.config" />
+      <File FileName="TestSerial_Dotnet/model/Cards.cs" Line="31" Column="22" />
+      <File FileName="../../.nuget/packages/nlog.config/4.6.8/contentFiles/any/any/NLog.config" />
+      <File FileName="TestSerial_Dotnet/model/AppContext.cs" Line="45" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="TestSerial_Dotnet" expanded="True">
-            <Node name="TestSerial_Dotnet" expanded="True" selected="True" />
+            <Node name="TestSerial_Dotnet" expanded="True">
+              <Node name="Dependencies" expanded="True" />
+              <Node name="decoder" expanded="True" />
+              <Node name="helper" expanded="True" />
+              <Node name="model" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

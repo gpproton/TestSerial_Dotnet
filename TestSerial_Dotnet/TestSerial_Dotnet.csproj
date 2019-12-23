@@ -7,6 +7,16 @@
 
     <ItemGroup>
       <PackageReference Include="System.IO.Ports" Version="4.7.0" />
+      <PackageReference Include="NLog.Config" Version="4.6.8" />
+      <PackageReference Include="NLog" Version="4.6.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="handler\" />
+      <Folder Include="decoder\" />
+      <Folder Include="helper\" />
+      <Folder Include="model\" />
+    </ItemGroup>
 </Project>
