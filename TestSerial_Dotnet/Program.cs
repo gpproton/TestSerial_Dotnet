@@ -4,6 +4,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 using TestSerial_Dotnet.model;
@@ -69,78 +70,118 @@ namespace TestSerial_Dotnet
             var dbContext = new AppsContext();
             dbContext.Database.EnsureCreated();
 
-            try
-            {
-                srp.Open();
 
-                while (true)
+            //Start Serial port opening error handler
+            int maxRetries = 5;
+            const int sleepTimeInMs = 3000;
+            string loggingMessage = string.Empty;
+
+            while (maxRetries > 0)
+            {
+                try
                 {
-                    if (CountBits >= _Fixed_Bytes) {
-                        // Console.WriteLine(tempByte.ToString());
-                        CountBits = 0;
-                    }
-                    
-                    if (srp.BytesToRead > 0)
+                    loggingMessage = "Opening serial port '" + srp.PortName + "'...";
+
+                    if(!srp.IsOpen)
                     {
-                        byte b = (byte)srp.ReadByte();
-                        if (Enumerable.Range(7,18).Contains(CountBits)) {
-                            tempByte[CountBits - 7] = b;
-                        }
-                        var finalHex = BitConverter.ToString(tempByte).Replace("-", string.Empty);
-                        var cutHex = finalHex.Replace("E20000", string.Empty);
-
-                        //var cardNumber = Convert.ToUInt64("16370402410910C2E9", 16);
-                        var cardNumber = BigInteger.Parse(cutHex, System.Globalization.NumberStyles.HexNumber);
-
-                        if (CountBits == _Fixed_Bytes -1) {
-
-                            //Ensure database is created
-                            //if (!dbContext.Cards.Any())
-                            //{
-                            
-                            //}
-
-                            try
-                            {
-                                dbContext.Cards.AddRange(new Card[]
-                                {
-                                            new Card{ Id=rnd.Next(999999999), CardNo=(decimal)cardNumber, Location=1, SubLocation=23, CaptureType=1 }
-                                });
-
-                                if (dbContext.SaveChanges() > 0)
-                                {
-                                    try
-                                    {
-                                        Logger.Info("UHF RFID NO:- " + cardNumber);
-
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Logger.Error(ex, "Goodbye cruel errors...");
-                                    }
-                                }
-
-                                
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                            }
-                            // foreach(byte xx in tempByte) {
-                            //     Console.WriteLine(xx);
-                            // }
-                        }
-                        // Console.WriteLine(b + "----" + CountBits.ToString());
-
-                        CountBits++;
+                        srp.Open();
                     }
                     
-    }
+                    loggingMessage += "Succeeded.";
+                    Logger.Info(loggingMessage);
+
+
+                    while (true)
+                    {
+
+                        while (!srp.IsOpen)
+                        {
+                            if (!srp.IsOpen)
+                            {
+                                srp.Open();
+                            }
+                        }
+
+                        if (CountBits >= _Fixed_Bytes)
+                        {
+                            // Console.WriteLine(tempByte.ToString());
+                            CountBits = 0;
+                        }
+
+                        if (srp.BytesToRead > 0)
+                        {
+                            byte b = (byte)srp.ReadByte();
+                            if (Enumerable.Range(7, 18).Contains(CountBits))
+                            {
+                                tempByte[CountBits - 7] = b;
+                            }
+                            var finalHex = BitConverter.ToString(tempByte).Replace("-", string.Empty);
+                            var cutHex = finalHex.Replace("E20000", string.Empty);
+
+                            //var cardNumber = Convert.ToUInt64("16370402410910C2E9", 16);
+                            var cardNumber = BigInteger.Parse(cutHex, System.Globalization.NumberStyles.HexNumber);
+
+                            if (CountBits == _Fixed_Bytes - 1)
+                            {
+
+                                //Ensure database is created
+                                //if (!dbContext.Cards.Any())
+                                //{
+
+                                //}
+
+                                try
+                                {
+                                    dbContext.Cards.AddRange(new Card[]
+                                    {
+                                            new Card{ Id=rnd.Next(999999999), CardNo=cardNumber.ToString(), Location=1, SubLocation=23, CaptureType=1 }
+                                    });
+
+                                    if (dbContext.SaveChanges() > 0)
+                                    {
+                                        try
+                                        {
+                                            Logger.Info("UHF RFID NO:- " + cardNumber);
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Logger.Error(ex, "Goodbye cruel errors...");
+                                        }
+                                    }
+
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+                                // foreach(byte xx in tempByte) {
+                                //     Console.WriteLine(xx);
+                                // }
+                            }
+                            // Console.WriteLine(b + "----" + CountBits.ToString());
+
+                            CountBits++;
+                        }
+
+                    }
+                }
+                catch (UnauthorizedAccessException unauthorizedAccessException)
+                {
+                    maxRetries--;
+                    loggingMessage += "Failed (UnauthorizedAccessException): ";
+                    Logger.Error(string.Format(loggingMessage + unauthorizedAccessException.Message + " -> Retrying in about {0} milliseconds...", sleepTimeInMs));
+                    Thread.Sleep(sleepTimeInMs);
+                }
+                catch (Exception exception)
+                {
+                    loggingMessage += "Failed: ";
+                    Logger.Error(loggingMessage + exception.Message);
+                }
             }
-            catch (IOException e)
-            {
-                Console.WriteLine(e);
-            }
+
+            
 
             // Console.ReadLine();
         }

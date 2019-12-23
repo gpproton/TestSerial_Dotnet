@@ -38,7 +38,7 @@ namespace TestSerial_Dotnet.model
         public int Id { get; set; }
 
         [Required]
-        public decimal CardNo { get; set; }
+        public string CardNo { get; set; }
 
         public DateTime CaptureTime { get; set; }
 
